@@ -7,21 +7,28 @@ require 'sub_mixer'
 
 
 def run
-  set_logging true, true
+  is_debug = true
+  is_verbose = true
+
+  set_logging is_debug, is_verbose
 
   s1 = ENV['S1']
   s2 = ENV['S2']
+
+  words_file = ENV['DICTIONARY']
   output_filename = ENV['OUT']
 
+  words = SubMixer::FileUtils.read words_file
+
   inputs = [
-      SubMixer::Input.new(filename: s1, priority_generator: SubMixer::BasicGenerator.new(0.5)),
-      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::BasicGenerator.new(0.5)),
+      SubMixer::Input.new(filename: s1, priority_generator: SubMixer::BasicPriorityGenerator.new(1)),
+      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::DictionaryPriorityGenerator.new(words, 100, true)),
   ]
 
   SubMixer::Runner.new(inputs, output_filename, :srt)
       .run
 rescue Exception => e
-  SubMixer.logger.error e.message
+  SubMixer.logger.error is_debug ? e : e.message
 end
 
 def set_logging(is_debug, is_verbose)

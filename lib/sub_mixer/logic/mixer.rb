@@ -2,11 +2,12 @@ module SubMixer
   class Mixer
     attr_accessor :report
 
-    def initialize(subs, max_parallel_sub_drift=0.20)
+    def initialize(subs, subtitle_picker:nil, max_parallel_sub_drift:0.20)
       unless subs.kind_of?(Array)
         raise 'subs must be an array'
       end
       @subs = subs
+      @sub_picker = subtitle_picker ? subtitle_picker : SubMixer::SubPicker.new
       @max_parallel_sub_drift = max_parallel_sub_drift
     end
 
@@ -44,8 +45,8 @@ module SubMixer
           v.start_time < new_start_time + @max_parallel_sub_drift
         end
 
-        # choose sub by priority
-        chosen_sub_idx, chosen_sub = get_random_weighted_subtitle(considered_subs)
+        # choose sub
+        chosen_sub_idx, chosen_sub = @sub_picker.pick_subtitle(considered_subs)
         result.subtitles << chosen_sub
         time = chosen_sub.end_time
         report[chosen_sub_idx] += 1
@@ -55,21 +56,6 @@ module SubMixer
         next_subs.reject! { |k, v| v.start_time < time }
       end
       result
-    end
-
-    private
-
-    def get_random_weighted_subtitle(subs)
-      weight_sum = subs.reduce(0) { |mem, (k, v)| mem + v.priority }
-      r = rand * weight_sum
-      count_weight = 0
-
-      subs.each do |k, v|
-        count_weight += v.priority
-        if count_weight >= r
-          return k, v
-        end
-      end
     end
   end
 end

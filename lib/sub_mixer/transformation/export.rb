@@ -8,12 +8,12 @@ module SubMixer
         when :srt
           SubMixer::SRTParser.compose subtitles
         else
-          fail SubMixer::FormatError "Export format #{subtitles.format.to_s.upcase} not supported"
+          fail SubMixer::FormatError "Export format #{subtitles.format.to_s.upcase} not supported for #{subtitles.name}"
         end
       rescue SubMixer::FormatError => e
         raise e
       rescue
-        raise "Failed composing content for #{subtitles.format.to_s}"
+        raise "Failed composing content for #{subtitles.format.to_s.upcase}"
       end
     end
   end

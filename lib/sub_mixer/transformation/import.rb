@@ -8,14 +8,14 @@ module SubMixer
         when :srt
           result.subtitles, result.metadata = SubMixer::SRTParser.parse(content)
         else
-          fail SubMixer::FormatError "Format #{format.to_s} not supported for #{name}"
+          fail SubMixer::FormatError "Format #{format.to_s.upcase} not supported for #{name}"
         end
 
         result
       rescue SubMixer::FormatError => e
         raise e
       rescue
-        raise "Failure while importing #{format.to_s} from #{name}"
+        raise "Failure while importing #{format.to_s.upcase} from #{name}"
       end
     end
   end
