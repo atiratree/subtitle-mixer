@@ -1,9 +1,8 @@
 module SubMixer
   class Runner
-    def initialize(inputs, output_filename, output_format)
+    def initialize(inputs, output)
       @inputs = inputs
-      @output_filename = output_filename
-      @output_format = output_format
+      @output = output
     end
 
     def run
@@ -36,9 +35,9 @@ module SubMixer
     end
 
     def content_inputs_to_subs(inputs)
-      inputs.map do |input|
+      inputs.map.with_index do |input, idx|
         format = SubMixer::SubUtils.detect_format(input.content)
-        subs = SubMixer::Import.import(input.content, input.name, format)
+        subs = SubMixer::Import.import(input.content, idx,input.name, format)
 
         if subs.subtitles.size > 0
           SubMixer.logger.info "Mixing #{input.name} (detected #{format}) with #{input.priority_generator.class.name}"
@@ -55,18 +54,20 @@ module SubMixer
       mixer = SubMixer::Mixer.new subs
 
       result_subs = mixer.mix
-      result_subs.name = @output_filename
-      result_subs.format = @output_format
+      result_subs.name = @output.filename
+      result_subs.format = @output.format
 
       mixer.report.each do |k, v|
         SubMixer.logger.info "Picked #{v} subtitles from #{subs[k].name}"
       end
 
 
-      result_content = SubMixer::Export.export(result_subs)
+
+      result_content = SubMixer::Export.export(result_subs,
+                                               @output)
       filename = SubMixer::FileUtils.write(result_content,
-                                           @output_filename,
-                                           @output_format)
+                                           @output.filename,
+                                           @output.format)
       SubMixer.logger.info "Mixed subtitles exported to #{filename}"
     end
   end

@@ -3,25 +3,28 @@ module SubMixer
     attr_accessor :name
     attr_accessor :format
     attr_accessor :subtitles
-    attr_accessor :metadata
 
-    def initialize(name=nil, format=nil, subtitles=[], metadata={})
+    def initialize(name:nil, format:nil, subtitles:[])
       @name = name
       @format = format
       @subtitles = subtitles
-      @metadata = metadata
 
-      @index = 0
+      reset
     end
 
     def get_next(time)
       while @index < @subtitles.length
-        if @subtitles[@index].start_time >= time
-          return @subtitles[@index]
-        end
+        curr_idx = @index
         @index += 1
+        if @subtitles[curr_idx].start_time >= time
+          return @subtitles[curr_idx]
+        end
       end
       nil
+    end
+
+    def reset
+      @index = 0
     end
   end
 end

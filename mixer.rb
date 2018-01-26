@@ -9,6 +9,8 @@ require 'sub_mixer'
 def run
   is_debug = true
   is_verbose = true
+  persist_formatting = true
+  font_size = 45
 
   set_logging is_debug, is_verbose
 
@@ -22,10 +24,16 @@ def run
 
   inputs = [
       SubMixer::Input.new(filename: s1, priority_generator: SubMixer::BasicPriorityGenerator.new(1)),
-      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::DictionaryPriorityGenerator.new(words, 100, true)),
+      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::BasicPriorityGenerator.new(2)),
+      # SubMixer::Input.new(filename: s2, priority_generator: SubMixer::DictionaryPriorityGenerator.new(words, 100, true)),
   ]
 
-  SubMixer::Runner.new(inputs, output_filename, :srt)
+  output = SubMixer::Output.new(filename: output_filename,
+                                format: :srt,
+                                persist_formatting: persist_formatting,
+                                font_size: font_size)
+
+  SubMixer::Runner.new(inputs, output)
       .run
 rescue Exception => e
   SubMixer.logger.error is_debug ? e : e.message

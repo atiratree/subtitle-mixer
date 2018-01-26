@@ -2,7 +2,7 @@ module SubMixer
   class Mixer
     attr_accessor :report
 
-    def initialize(subs, subtitle_picker:nil, max_parallel_sub_drift:0.20)
+    def initialize(subs, subtitle_picker: nil, max_parallel_sub_drift: 0.20)
       unless subs.kind_of?(Array)
         raise 'subs must be an array'
       end
@@ -53,8 +53,9 @@ module SubMixer
 
 
         # clear old subs
-        next_subs.reject! { |k, v| v.start_time < time }
+        next_subs.reject! { |k, v| v.start_time <= time }
       end
+      @subs.each { |sub| sub.reset }
       result
     end
   end
