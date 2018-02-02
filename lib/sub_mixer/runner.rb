@@ -29,7 +29,12 @@ module SubMixer
       content_inputs += file_inputs
       content_inputs.uniq! { |input| input.content }
       (inputs - content_inputs).each do |input|
-        SubMixer.logger.info "Removing duplicate #{input.name ? input.name : input.filename}"
+        name = input.name ? input.name : input.filename
+        if SubMixer::Utils.is_empty(input.content)
+          SubMixer.logger.info "Removing empty file #{name}"
+        else
+          SubMixer.logger.info "Removing duplicate #{name}"
+        end
       end
       content_inputs
     end

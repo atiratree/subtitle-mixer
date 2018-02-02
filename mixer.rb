@@ -24,12 +24,12 @@ def run
 
   inputs = [
       SubMixer::Input.new(filename: s1, priority_generator: SubMixer::BasicPriorityGenerator.new(1)),
-      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::BasicPriorityGenerator.new(2)),
+      SubMixer::Input.new(filename: s2, priority_generator: SubMixer::BasicPriorityGenerator.new(1)),
       # SubMixer::Input.new(filename: s2, priority_generator: SubMixer::DictionaryPriorityGenerator.new(words, 100, true)),
   ]
 
   output = SubMixer::Output.new(filename: output_filename,
-                                format: :srt,
+                                format: :ass,
                                 persist_formatting: persist_formatting,
                                 font_size: font_size)
 
