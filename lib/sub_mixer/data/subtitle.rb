@@ -8,8 +8,8 @@ module SubMixer
 
     attr_accessor :metadata
 
-    attr_accessor :priority
-    attr_accessor :priority_flag
+    attr_accessor :weight
+    attr_accessor :pick_flag
 
     def initialize(options={})
       options.each do |k, v|

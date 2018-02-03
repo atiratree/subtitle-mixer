@@ -1,22 +1,30 @@
 require 'srt'
 
 module SubMixer
-  class BasicPriorityGenerator
-
-    def initialize(priority)
-      @priority = priority
+  class WeightGenerator
+    def initialize(weight)
+      raise 'weight must be between 0 and 1' if (!priority.is_a? Numeric) || weight < 0 || weight > 1
+      @weight = weight
     end
 
     def process(subtitles)
       subtitles.subtitles.each do |sub|
-        sub.priority = @priority
-        sub.priority_flag = :default
+        sub.weight = @weight
+        sub.pick_flag = :default
       end
     end
   end
 
-  class DictionaryPriorityGenerator
+  # Params:
+  # +priority+:: subtitles are weighted with 1 / priority, higher priority number has less chance to be picked
+  class PriorityGenerator < WeightGenerator
+    def initialize(priority)
+      raise 'priority must be integer larger than 0' if (!priority.is_a? Integer) || priority < 1
+      @weight = 1 / priority.to_f
+    end
+  end
 
+  class DictionaryPriorityGenerator
     def initialize(words, percentage_threshold, drop_bellow_threshold=true)
       if percentage_threshold < 0 || percentage_threshold > 100
         fail ArgumentError('pecentage should be between 0 and 100')
@@ -34,14 +42,14 @@ module SubMixer
         count = sub_dictionary.size
         intersect_count = (@dictionary & sub_dictionary).size
 
-        sub.priority = count == 0 ? 0 : intersect_count / count.to_f
+        sub.weight = count == 0 ? 0 : intersect_count / count.to_f
 
-        if sub.priority >= @p
-          sub.priority_flag = :pick_first
+        if sub.weight >= @p
+          sub.pick_flag = :pick_first
         elsif @drop_bellow_threshold
-          sub.priority_flag = :drop
+          sub.pick_flag = :drop
         else
-          sub.priority_flag = :default
+          sub.pick_flag = :default
         end
       end
     end

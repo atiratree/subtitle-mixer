@@ -1,7 +1,7 @@
 module SubMixer
   class SubPicker
     def pick_subtitle(subs)
-      valid_subs = subs.reject { |k, v| v.priority_flag == :drop }
+      valid_subs = subs.reject { |k, v| v.pick_flag == :drop }
 
       if valid_subs.size == 0
         # pick at least one if commanded to drop everything
@@ -14,15 +14,15 @@ module SubMixer
 
       weight_sum = 0
       valid_subs.each do |k, v|
-        if v.priority_flag == :pick_first
+        if v.pick_flag == :pick_first
           return k, v
         end
 
-        if v.priority < 0
+        if v.weight < 0
           fail 'Priority cannot be negative'
         end
 
-        weight_sum += v.priority
+        weight_sum += v.weight
       end
 
       get_random_weighted_subtitle(valid_subs, weight_sum)
@@ -35,7 +35,7 @@ module SubMixer
       count_weight = 0
 
       subs.each do |k, v|
-        count_weight += v.priority
+        count_weight += v.weight
         if count_weight >= r
           return k, v
         end
