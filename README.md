@@ -1,4 +1,21 @@
 # Subtitle Mixer
+
+## Installation:
+Install [ruby](https://www.ruby-lang.org/en/documentation/installation/), [rubygems](https://rubygems.org/pages/download) and libicu-dev
+``` shell
+gem install bundler
+cd "$INSTALL_DIR"
+git clone https://github.com/suomiy/subtitle-mixer.git 
+cd "subtitle-mixer"
+bundle install
+# OPTIONAL: make alias for easier usage
+echo "alias subtitle-mixer=""`pwd`""/subtitle-mixer.rb" >> ~/.bashrc
+# mix subs!
+./subtitle-mixer -p "movie.en.srt" -p "movie.de.ass" -o "combined"
+```
+
+## Usage:
+
 ```
 usage: subtitle-mixer.rb [options]
     -p FILENAME,[PRIORITY],          Subtitles are picked based on weight = (1 / PRIORITY).
