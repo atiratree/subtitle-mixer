@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ROOT="/tmp/src"
+ROOT2="/tmp/src2"
+
+mv  "$ROOT/server/" "$ROOT2/"
+
+### remove symlinks
+### port parent sources to rails
+rm -f "$ROOT2/lib/sub_mixer" "$ROOT2/lib/sub_mixer.rb"
+mv "$ROOT/lib/sub_mixer" "$ROOT/lib/sub_mixer.rb" "$ROOT2/lib/"
+
+### cleanup
+rm -rf "$ROOT"
+mv "$ROOT2" "$ROOT"
+
+# Run the original assemble script.
+# expects rails as root
+exec /usr/libexec/s2i/assemble

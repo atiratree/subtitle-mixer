@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Before hook
+
+# Run the original run script.
+exec /usr/libexec/s2i/run
