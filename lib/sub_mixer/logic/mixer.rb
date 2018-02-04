@@ -4,7 +4,7 @@ module SubMixer
 
     def initialize(subs, subtitle_picker: nil, max_parallel_sub_drift: 0.20)
       unless subs.kind_of?(Array)
-        raise 'subs must be an array'
+        fail ArgumentError 'subs must be an array'
       end
       @subs = subs
       @sub_picker = subtitle_picker ? subtitle_picker : SubMixer::SubPicker.new

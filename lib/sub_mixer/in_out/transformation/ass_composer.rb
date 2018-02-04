@@ -99,6 +99,10 @@ module SubMixer
     end
 
     def create_styles(font_size)
+      if font_size
+        @report << "Setting font size to #{font_size}"
+      end
+
       style_result = get_default_style(font_size) # for subs without style (usually srt)
       @metadatas.each do |metadata|
         styles = metadata[:v4_styles][:styles]

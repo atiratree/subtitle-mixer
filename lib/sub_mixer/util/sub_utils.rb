@@ -1,7 +1,6 @@
 module SubMixer
   module SubUtils
     class << self
-
       def supported_formats
         [:srt, :ssa, :ass]
       end
@@ -19,7 +18,7 @@ module SubMixer
             :ssa
           end
         else
-          raise 'Unknown format'
+          fail 'Unknown format'
         end
       end
 
@@ -33,7 +32,7 @@ module SubMixer
           if captures
             detect_ssa_or_ass captures[:version]
           else
-            raise 'Unknown format'
+            fail 'Unknown format'
           end
         end
       end

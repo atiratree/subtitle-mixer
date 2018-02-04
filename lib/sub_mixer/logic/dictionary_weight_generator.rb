@@ -1,39 +1,15 @@
-require 'srt'
+require 'set'
 
 module SubMixer
-  class WeightGenerator
-    def initialize(weight)
-      raise 'weight must be between 0 and 1' if (!priority.is_a? Numeric) || weight < 0 || weight > 1
-      @weight = weight
-    end
-
-    def process(subtitles)
-      subtitles.subtitles.each do |sub|
-        sub.weight = @weight
-        sub.pick_flag = :default
-      end
-    end
-  end
-
-  # Params:
-  # +priority+:: subtitles are weighted with 1 / priority, higher priority number has less chance to be picked
-  class PriorityGenerator < WeightGenerator
-    def initialize(priority)
-      raise 'priority must be integer larger than 0' if (!priority.is_a? Integer) || priority < 1
-      @weight = 1 / priority.to_f
-    end
-  end
-
-  class DictionaryPriorityGenerator
-    def initialize(words, percentage_threshold, drop_bellow_threshold=true)
+  class DictionaryWeightGenerator
+    def initialize(percentage_threshold=100, drop_bellow_threshold=true)
       if percentage_threshold < 0 || percentage_threshold > 100
         fail ArgumentError('pecentage should be between 0 and 100')
       end
 
       @p = percentage_threshold / 100.to_f
       @drop_bellow_threshold = drop_bellow_threshold
-      @dictionary = create_dictionary(words)
-
+      @dictionary = Set.new
     end
 
     def process(subtitles)
@@ -52,6 +28,10 @@ module SubMixer
           sub.pick_flag = :default
         end
       end
+    end
+
+    def set_words(words)
+      @dictionary = create_dictionary(words)
     end
 
     private

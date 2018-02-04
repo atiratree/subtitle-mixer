@@ -2,7 +2,6 @@ require 'charlock_holmes'
 
 module SubMixer
   module FileUtils
-
     class << self
       BOM_LIST_HEX = {
           Encoding::UTF_8 => "\xEF\xBB\xBF", #"\uEFBBBF"

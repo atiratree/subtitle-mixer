@@ -24,7 +24,7 @@ module SubMixer
     end
 
     def parse(id, name, content)
-      raise 'id must be number' unless id.is_a? Numeric
+      fail 'id must be number' unless id.is_a? Numeric
 
       @global_metadata[:id] = id
       @result.name = name
