@@ -1,0 +1,14 @@
+#header
+  .title-header
+    = image_tag 'header.jpg'
+    .title-overlay
+      h1
+        strong Subtitle&nbspMixer
+  nav.navbar.navbar-light
+    ul.nav.navbar-nav
+      li.active
+        = link_to 'Home', {controller: 'main'}
+      li
+        = link_to 'Instructions', {controller: 'instructions'}
+      li
+        = link_to 'About', {controller: 'about'}
