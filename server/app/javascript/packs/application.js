@@ -7,6 +7,11 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import "../src/application.scss"
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap-theme.min.css'
+import 'bootstrap-slider/dist/css/bootstrap-slider.min.css'
+// import 'bootstrap/dist/js/bootstrap.min'
+
 import "../src/navbar.scss"
 import "../images/header.jpg"
+import "../src/application.scss"

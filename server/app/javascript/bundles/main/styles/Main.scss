@@ -1,3 +1,36 @@
-h1 {
-    color: blue;
+.output-header {
+  text-align: center;
+}
+.sub-header {
+  padding-bottom: 0.4em;
+}
+
+.browse-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0.20em;
+}
+
+.no-right-border {
+  border-right: none !important;
+}
+
+.error-label {
+  padding: 1em;
+}
+
+#how-to ol {
+  font-size: 1.3em;
+}
+
+.left-percentage {
+  padding-right: 2em;
+}
+
+.right-percentage {
+  padding-left: 2em;
+}
+
+.smallNumber {
+  color: #666666;
 }
