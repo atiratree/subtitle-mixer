@@ -1,0 +1,15 @@
+#header
+  .title-header
+
+    img src="#{asset_pack_path 'images/header.jpg'}"
+    .title-overlay
+      h1
+        strong Subtitle&nbspMixer
+  nav.navbar.navbar-light
+    ul.nav.navbar-nav
+      li
+        = link_to 'Home', {controller: 'main'}
+      li
+        = link_to 'Instructions', {controller: 'instructions'}
+      li
+        = link_to 'About', {controller: 'about'}

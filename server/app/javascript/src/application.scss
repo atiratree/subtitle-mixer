@@ -1,0 +1,16 @@
+body {
+  background-color: #ede7f6;
+}
+
+#main-content {
+  background-clip: content-box;
+  background-color: white;
+  min-height: 100vh;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #26a69a;
+  border: 0;
+}

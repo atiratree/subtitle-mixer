@@ -1,0 +1,5 @@
+#main-content.container
+  = render 'shared/navbar'
+
+  #content
+    = react_component('Main', props: @main_props, prerender: false)
