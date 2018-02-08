@@ -1,26 +1,30 @@
+#mix-area {
+  margin-bottom: 25vh;
+}
+
+#description {
+  padding-bottom: 2em;
+  padding-left: 2em;
+}
+
 .output-header {
   text-align: center;
 }
+
 .sub-header {
-  padding-bottom: 0.4em;
+  padding-bottom: 0.20em;
 }
 
 .browse-button {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  padding: 0.20em;
+  margin: 0.33em;
+}
+
+.browse-label {
+  padding: 0.33em;
 }
 
 .no-right-border {
   border-right: none !important;
-}
-
-.error-label {
-  padding: 1em;
-}
-
-#how-to ol {
-  font-size: 1.3em;
 }
 
 .left-percentage {

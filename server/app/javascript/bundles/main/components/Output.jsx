@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 export default class SubtitlesSelect extends React.Component {
 
@@ -13,12 +12,7 @@ export default class SubtitlesSelect extends React.Component {
     constructor(props) {
         super(props);
 
-        this.onSliderChange = this.onSliderChange.bind(this);
         this.onFormatChange = this.onFormatChange.bind(this);
-    }
-
-    onSliderChange(e) {
-        this.props.onChange('sub2Percentage', e.target.value);
     }
 
     onFormatChange(e) {
@@ -27,36 +21,13 @@ export default class SubtitlesSelect extends React.Component {
 
     render() {
         const data = this.props.data;
-        const sub2Percentage = data.sub2Percentage;
-        const sub1Percentage = 100 - sub2Percentage;
 
         return (
             <div id={this.props.id}>
-                <h2 className="output-header">
+                <h3 className="output-header">
                     Output
-                </h2>
-                <br/>
-                <div className="form-group">
-                    <label className="left-percentage">
-                        <small className="smallNumber">(No. 1)</small>
-                        {` ${sub1Percentage}%`}
-                    </label>
-                    <ReactBootstrapSlider
-                        value={sub2Percentage}
-                        change={this.onSliderChange}
-                        slideStop={this.onSliderChange}
-                        step={1}
-                        max={100}
-                        min={0}
-                        tooltip="hide"
-                        orientation="horizontal"/>
-                    <label className="right-percentage">
-                        {`${sub2Percentage}% `}
-                        <small className="smallNumber">(No. 2)</small>
-                    </label>
-                </div>
+                </h3>
                 <div className="row">
-                    <div className="col-md-6 col-md-offset-3 text-center">
                         <div className="form-group">
                             <label>
                                 Format
@@ -67,7 +38,6 @@ export default class SubtitlesSelect extends React.Component {
                             </select>
                         </div>
                     </div>
-                </div>
             </div>
         );
     }

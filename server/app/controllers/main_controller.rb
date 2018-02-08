@@ -1,8 +1,8 @@
 class MainController < ApplicationController
-  layout "main"
+  layout 'main'
 
   def index()
-    @main_props = {
+    @props = {
         authenticity_token: form_authenticity_token
     }
   end

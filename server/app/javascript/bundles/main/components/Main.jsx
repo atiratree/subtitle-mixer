@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SubtitlesSelect from './SubtitlesSelect';
+import WeightWidget from './WeightWidget';
 import Output from './Output';
 
 export default class Main extends React.Component {
@@ -20,13 +21,13 @@ export default class Main extends React.Component {
                 sub1: {
                     name: '',
                     content: '',
-                    mode: 'lang',
+                    mode: 'LANG',
                     error: null,
                 },
                 sub2: {
                     name: '',
                     content: '',
-                    mode: 'lang',
+                    mode: 'LANG',
                     error: null,
                 },
                 output: {
@@ -54,11 +55,11 @@ export default class Main extends React.Component {
         [sub1, sub2].forEach(sub => {
             sub.error = null;
             if (sub.name) {
-                if (!sub.content) {
-                    sub.error = "Please select non empty file";
+                if (!sub.content || sub.content === 'data:') {
+                    sub.error = "Select a non empty file";
                 }
             } else {
-                sub.error = "Please select a file";
+                sub.error = "Select a file";
             }
         });
 
@@ -73,31 +74,28 @@ export default class Main extends React.Component {
     render() {
         return (
             <div className="container">
-                <div id="how-to">
-                    <h1>
-                        How-to
-                    </h1>
-                    <ol>
+                <div id="description">
+                    <h2>
+                        Picks one subtitle at a time:
+                    </h2>
+                    <ul className="larger-font">
                         <li>
-                            Upload subtitles in <strong>SRT</strong> or <strong>SSA/ASS</strong> format
+                            Randomly chosen based on weight
                         </li>
                         <li>
-                            Select percentage of how much of each subtitle you want to see
+                            Or weighed based on your learned words <small className="smallNumber">(TBD)</small>
                         </li>
-                        <li>
-                            Select output format (preferably the same as input format)
-                        </li>
-                    </ol>
+                    </ul>
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <SubtitlesSelect name={"Subtitles No. 1"}
+                        <SubtitlesSelect name={"Language No. 1"}
                                          id={'sub1'}
                                          data={this.state.result.sub1}
                                          onChange={this.setResult.bind(this, 'sub1')}/>
                     </div>
                     <div className="col-md-6">
-                        <SubtitlesSelect name={"Subtitles No. 2"}
+                        <SubtitlesSelect name={"Language No. 2"}
                                          id={'sub2'}
                                          data={this.state.result.sub2}
                                          onChange={this.setResult.bind(this, 'sub2')}/>
@@ -105,14 +103,22 @@ export default class Main extends React.Component {
                 </div>
                 <hr/>
                 <div className="row">
-                    <div className="col-md-6 col-md-offset-3 text-center">
+                    <div className="col-md-6 col-md-offset-3">
+                        <WeightWidget id={'output'}
+                                      data={this.state.result.output}
+                                      onChange={this.setResult.bind(this, 'output')}/>
+                    </div>
+                </div>
+                <hr/>
+                <div className="row">
+                    <div className="col-md-4 col-md-offset-4">
                         <Output id={'output'}
                                 data={this.state.result.output}
                                 onChange={this.setResult.bind(this, 'output')}/>
                     </div>
                 </div>
                 <hr/>
-                <div className="row">
+                <div className="row" id="mix-area">
                     <div className="col-md-6 col-md-offset-3 text-center">
                         <form ref="mixForm"
                               role='form' acceptCharset="UTF-8"
@@ -126,8 +132,6 @@ export default class Main extends React.Component {
                         </button>
                     </div>
                 </div>
-
-
             </div>
         );
     }

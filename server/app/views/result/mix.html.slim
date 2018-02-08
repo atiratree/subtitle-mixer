@@ -2,6 +2,4 @@
   = render 'shared/navbar'
 
   #content
-    = @values['sub1']['name']
-    br
-    = @values['sub2']['name']
+    = react_component('Result', props: @props, prerender: false)

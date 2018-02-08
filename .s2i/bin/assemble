@@ -18,6 +18,7 @@ mv "$ROOT2" "$ROOT"
 # s2i expects rails as /tmp/src
 
 cd "$ROOT"
+echo "npm installing..."
 npm install
 cd -
 

@@ -19,13 +19,22 @@ export default class SubtitlesSelect extends React.Component {
 
     onNewFileEvent(e) {
         if (e.target.files.length > 0) {
+            // clear old content first
+            this.setResult('error', null);
+            this.setResult('content', null);
+            this.setResult('name', null);
             const file = e.target.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                this.setResult('error', "Only files 5 MiB and less are supported");
+                return
+            }
             this.setResult('name', file.name);
             let reader = new FileReader();
+
             reader.onload = (e) => {
                 this.setResult('content', e.target.result);
             };
-            reader.readAsText(file);
+            reader.readAsDataURL(file);
         }
     }
 
@@ -38,7 +47,6 @@ export default class SubtitlesSelect extends React.Component {
         return `${this.props.id}-${value}`
     }
 
-
     render() {
         const data = this.props.data;
         const id = this.id;
@@ -46,7 +54,7 @@ export default class SubtitlesSelect extends React.Component {
         let errorLabel = null;
         if (data.error) {
             errorLabel = (
-                <label className="error-label text-danger">
+                <label className="text-danger">
                     <strong>
                         {data.error}
                     </strong>
@@ -55,27 +63,26 @@ export default class SubtitlesSelect extends React.Component {
         }
 
         return (
-            <div id={this.props.id}>
-                <h3 className="sub-header">
-                    {this.props.name}
-                </h3>
-                <div className="form-horizontal">
-                    <div className="form-group">
-                        <label htmlFor={id("file")} className="col-sm-3  control-label">
-                            Upload File
-                        </label>
-                        <div className="input-append">
+
+            <div className="row" id={this.props.id}>
+                <div className="col-md-6 col-md-offset-3 text-center">
+                    <h3 className="sub-header">
+                        {this.props.name}
+                    </h3>
+                    <div className="form-horizontal">
+                        <div className="form-group">
+                            <label htmlFor={id("file")} className="control-label browse-label">
+                                Upload File
+                            </label>
                             <input id={id("file-name")}
                                    type="text"
-                                   className="no-right-border span2"
+                                   className="form-control"
                                    readOnly="readonly"
-                                   value={ data.name }/>
-                            <span className="add-on">
-                                <label className="btn btn-default browse-button">
-                                    Browse<input type="file" className="hide" id={id("file")}
-                                                 onChange={this.onNewFileEvent}/>
-                                </label>
-                            </span>
+                                   value={data.name}/>
+                            <label className="btn btn-default browse-button">
+                                Browse<input type="file" className="hide" id={id("file")}
+                                             onChange={this.onNewFileEvent}/>
+                            </label>
                         </div>
                     </div>
                     {errorLabel}
