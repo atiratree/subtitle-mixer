@@ -40,7 +40,7 @@ class ResultController < ApplicationController
     output = data[OUTPUT]
     format = output[FORMAT].downcase == 'ass' ? :ass : :srt
 
-    sub_output = SubMixer::Output.new(filename: 'combined', # just a name, is not saved
+    sub_output = SubMixer::Output.new(name: 'combined',
                                       format: format,
                                       persist_formatting: output[PERSIST_FORMATTING],
                                       max_parallel_sub_drift: 0.2)

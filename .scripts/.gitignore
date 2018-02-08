@@ -1,3 +1,4 @@
 deploy.sh
 oc-deploy.sh
 docker-deploy.sh
+test_files

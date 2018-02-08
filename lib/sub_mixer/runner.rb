@@ -29,9 +29,6 @@ module SubMixer
         if word_list_input.word_list_filename
           word_list_input.words = SubMixer::FileUtils.read word_list_input.word_list_filename
         end
-        unless word_list_input.name
-          word_list_input.name = word_list_input.word_list_filename
-        end
         word_list_input.words = SubMixer::FileUtils.as_safe_string(word_list_input.words, word_list_input.name)
         word_list_input.weight_generator.set_words(word_list_input.words)
         inputs + [word_list_input]
@@ -42,15 +39,10 @@ module SubMixer
 
     def inputs_to_contents(inputs)
       file_inputs = inputs.select { |input| input.filename }
-                        .uniq { |input| input.filename }
-
       content_inputs = inputs.select { |input| input.content }
 
       file_inputs.each do |input|
         input.content = SubMixer::FileUtils.read(input.filename)
-        unless input.name
-          input.name = input.filename
-        end
       end
       content_inputs += file_inputs
 
@@ -62,11 +54,11 @@ module SubMixer
       (inputs - content_inputs).each do |input|
         name = input.name ? input.name : input.filename
         if SubMixer::Utils.is_empty(input.content)
-          SubMixer.logger.info "Removing empty file #{name}"
           fail "Empty file #{name}" if @fail_hard
+          SubMixer.logger.info "Removing empty file #{name}"
         else
-          SubMixer.logger.info "Removing duplicate #{name}"
           fail "Duplicate file #{name}" if @fail_hard
+          SubMixer.logger.info "Removing duplicate #{name}"
         end
       end
       content_inputs
@@ -78,8 +70,8 @@ module SubMixer
           format = SubMixer::SubUtils.detect_format(input.content)
         rescue
           should_be = "Should be one of: #{SubMixer::SubUtils.supported_formats.join(', ')}."
-          SubMixer.logger.info "Invalid format: skipping #{input.name}. #{should_be}"
           fail "#{input.name} has invalid format. #{should_be}" if @fail_hard
+          SubMixer.logger.info "Invalid format: skipping #{input.name}. #{should_be}"
           return
         end
         subs = SubMixer::Import.import(input.content, idx, input.name, format)
@@ -87,8 +79,8 @@ module SubMixer
         if subs.subtitles.size > 0
           SubMixer.logger.info "Mixing #{input.name} (detected #{format}) with #{input.weight_generator.class.name}"
         else
-          SubMixer.logger.info "Skipping #{input.name} because empty"
           fail "No subtitles found in #{name}" if @fail_hard
+          SubMixer.logger.info "Skipping #{input.name} because empty"
         end
 
         input.weight_generator.process subs
@@ -104,7 +96,7 @@ module SubMixer
       end
 
       result_subs = mixer.mix
-      result_subs.name = @output.filename
+      result_subs.name = @output.name
       result_subs.format = @output.format
 
       mixer.report.each do |k, v|
@@ -113,7 +105,8 @@ module SubMixer
         @report << message
       end
 
-      name = SubMixer::FileUtils.with_extension(@output.filename, @output.format)
+      path = @output.filename ? @output.filename : @output.name
+      name = SubMixer::FileUtils.with_extension(path, @output.format)
       content = SubMixer::Export.export(result_subs, @output)
       return name, content
     end

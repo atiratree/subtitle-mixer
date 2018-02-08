@@ -18,9 +18,7 @@ module SubMixer
           return k, v
         end
 
-        if v.weight < 0
-          fail 'Priority cannot be negative'
-        end
+        fail 'Weight cannot be negative' if v.weight < 0
 
         weight_sum += v.weight
       end
@@ -34,6 +32,7 @@ module SubMixer
       r = rand * weight_sum
       count_weight = 0
 
+      # could be modified to use binary search, but not worth it, cause usually n == 2
       subs.each do |k, v|
         count_weight += v.weight
         if count_weight >= r

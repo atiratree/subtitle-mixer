@@ -1,6 +1,6 @@
 # Subtitle Mixer
 
-## Installation:
+## Installation
 Install [ruby](https://www.ruby-lang.org/en/documentation/installation/), [rubygems](https://rubygems.org/pages/download) and libicu-dev
 ``` shell
 gem install bundler
@@ -14,8 +14,8 @@ echo "alias subtitle-mixer=""`pwd`""/subtitle-mixer.rb" >> ~/.bashrc
 ./subtitle-mixer -p "movie.en.srt" -p "movie.de.ass" -o "combined"
 ```
 
-## Usage:
-#### Example with 2 subtitles
+## Usage
+### Example with 2 subtitles
  1. Just use `srt` output format  when both are `srt` + persist formatting. Percentages should be: 35 + 65 = 100
 ```bash
 subtitle-mixer -u -p "movie.en.srt",35 -p "movie.de.srt",65 -o "combined" -f srt
@@ -78,5 +78,7 @@ Usage: subtitle-mixer.rb [options]
                                      	DEFAULT VALUES: DRIFT=0.2
     -d, --debug
     -v, --verbose
+    -q, --fail-hard                  Fails on first soft error. subtitle-mixer will skip invalid subtitles without this option
     -h, --help                       Prints this help
+                                     	Usage examples at https://github.com/suomiy/subtitle-mixer
 ```

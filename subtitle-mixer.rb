@@ -7,12 +7,16 @@ require 'sub_mixer'
 def run
   options = SubMixer::ArgParser.parse
   set_logging options[:debug], options[:verbose]
-  SubMixer::Runner.new(options[:inputs], options[:output], word_list_input: options[:word_list_input])
-      .run
+  runner = SubMixer::Runner.new(options[:inputs],
+                                options[:output],
+                                word_list_input: options[:word_list_input],
+                                fail_hard: options[:fail_hard])
+  runner.run
 rescue SystemExit
-  # program wants to exit: usually on --help
+  exit # on --help
 rescue Exception => e
   SubMixer.logger.error (options && options[:debug]) ? e : e.message
+  exit 1
 end
 
 def set_logging(is_debug, is_verbose)

@@ -7,13 +7,13 @@ module SubMixer
       output = SubMixer::Output.new(format: :ass,
                                     persist_formatting: false,
                                     max_parallel_sub_drift: 0.2)
-
       options = {
           :word_list_input => nil,
           :inputs => inputs,
           :output => output,
           :debug => false,
           :verbose => false,
+          :fail_hard => false,
       }
 
       OptionParser.new do |opts|
@@ -40,10 +40,6 @@ module SubMixer
           end
           filename = args[0]
           inputs << SubMixer::Input.new(filename: filename, weight_generator: SubMixer::PercentageGenerator.new(percentage))
-        end
-
-        opts.on do |args|
-          puts args
         end
 
         opts.on('-r', '--rsubtitle FILENAME,[PRIORITY]', Array,
@@ -93,7 +89,7 @@ module SubMixer
           when 2
           when 3, 4
             percentage_threshold = as_percentage(args[2], 'PERCENTAGE_THRESHOLD')
-            if 4
+            if args.length == 4
               drop_bellow_threshold = as_bool(args[3], 'DROP_BELLOW_THRESHOLD')
             end
           else
@@ -101,9 +97,9 @@ module SubMixer
           end
           filename = args[0]
           word_list = args[1]
-          dictionary_generator = SubMixer::DictionaryWeightGenerator.new(percentage_threshold, drop_bellow_threshold)
+          weight_generator = SubMixer::DictionaryWeightGenerator.new(percentage_threshold, drop_bellow_threshold)
           options[:word_list_input] = SubMixer::WordListSubtitleInput.new(filename: filename,
-                                                                          dictionary_generator: dictionary_generator,
+                                                                          weight_generator: weight_generator,
                                                                           word_list_filename: word_list)
         end
 
@@ -144,7 +140,12 @@ module SubMixer
           options[:verbose] = v
         end
 
-        opts.on('-h', '--help', 'Prints this help') do
+        opts.on('-q', '--fail-hard', 'Fails on first soft error. subtitle-mixer will skip invalid subtitles without this option') do |q|
+          options[:fail_hard] = q
+        end
+
+        opts.on('-h', '--help', 'Prints this help',
+                "\tUsage examples at https://github.com/suomiy/subtitle-mixer") do
           puts opts
           fail SystemExit
         end
@@ -156,13 +157,12 @@ module SubMixer
       end
 
       if input_count < 2
-        fail OptionParser::MissingArgument.new('at least 2 subtitles (i.e. --psubtitle, --rsubtitle or --wsubtitle) must be specified. See -h for help')
+        fail OptionParser::MissingArgument.new('at least 2 subtitles (e.g. --psubtitle, --rsubtitle or --wsubtitle) must be specified. See -h for help')
       end
 
       unless output.filename
         fail OptionParser::MissingArgument.new('--output FILENAME. See -h for help')
       end
-      puts options
       options
     end
 

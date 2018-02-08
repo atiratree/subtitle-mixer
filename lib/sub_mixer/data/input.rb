@@ -9,7 +9,7 @@ module SubMixer
 
     def initialize(filename: nil, name: nil, content: nil, weight_generator: nil)
       @filename = filename
-      @name = name
+      @name = name ? name : filename
       @content = content
       @weight_generator = weight_generator
     end
@@ -19,8 +19,8 @@ module SubMixer
     attr_accessor :word_list_filename
     attr_accessor :words
 
-    def initialize(filename: nil, name: nil, content: nil, dictionary_generator: nil, word_list_filename: nil, words: nil)
-      super(filename: filename, name: name, content: content, weight_generator: dictionary_generator)
+    def initialize(filename: nil, name: nil, content: nil, weight_generator: nil, word_list_filename: nil, words: nil)
+      super(filename: filename, name: name, content: content, weight_generator: weight_generator)
       @word_list_filename = word_list_filename
       @words = words
     end
