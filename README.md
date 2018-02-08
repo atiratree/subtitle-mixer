@@ -15,7 +15,29 @@ echo "alias subtitle-mixer=""`pwd`""/subtitle-mixer.rb" >> ~/.bashrc
 ```
 
 ## Usage:
+#### Example with 2 subtitles
+ 1. Just use `srt` output format  when both are `srt` + persist formatting. Percentages should be: 35 + 65 = 100
+```bash
+subtitle-mixer -u -p "movie.en.srt",35 -p "movie.de.srt",65 -o "combined" -f srt
+```
 
+
+2. Only `ass` formatting gets persisted this way. Set font size to have the same sizes for both subs. You can turn off persisted formatting if the styles are too different.
+```bash
+subtitle-mixer -u -r "movie.en.ass",3 -r "movie.de.srt",4 -o "combined" -f ass -s 50
+```
+3. Example with dictionary. `movie.en` must have percentage = 100 or priority = 1 to work properly. `movie.de` is always selected when 60% of words are recognized. It is weighed against percentage 100% of `movie.en`, once bellow 60%. 
+
+```bash
+subtitle-mixer -p "movie.en.ass",100 -w "movie.de.ass","my-dict.txt",60,true -o "combined" -s 50
+```
+
+4. Try to increase drift if you encounter badly timed subs. Use with caution: this can lead to higher number of overlap mistakes. There is a small chance of mistakes even with a default value of drift 0.2. Set to 0 to if you have subs with exactly the same timing.
+
+```bash
+subtitle-mixer --max-drift 0.5 -r "movie.en.srt" -r "movie.bad.timing.de.srt" -o "combined" -f srt 
+```
+### Help
 ```
 Usage: subtitle-mixer.rb [options]
     -p FILENAME,[PERCENTAGE],        Subtitles are picked based on weight = (PERCENTAGE / 100).
