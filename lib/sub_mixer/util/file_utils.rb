@@ -11,35 +11,15 @@ module SubMixer
           Encoding::UTF_32LE => "\xFE\xFF\x00\x00",
       }
 
-      def read(filename, encoding=nil)
+      def read(filename)
         begin
-          content = File.read(filename)
+          File.read(filename)
         rescue
           raise "Could not open #{filename}"
         end
-
-        begin
-          unless encoding
-            detection = CharlockHolmes::EncodingDetector.detect(content)
-            encoding = detection[:encoding]
-          end
-          SubMixer.logger.info "Assuming #{encoding} for #{filename}"
-          content.force_encoding(encoding)
-        rescue
-          raise "Failure while setting encoding for #{filename}"
-        end
-
-        content = remove_bom(content)
-
-        begin
-          content.encode('UTF-8')
-        rescue
-          raise "Failure while transcoding #{filename} from #{content.encoding} to intermediate UTF-8 encoding"
-        end
       end
 
-      def write(content, path, extension)
-        filename = with_extension(path, extension)
+      def write(content, filename)
         begin
           File.open(filename, 'w:UTF-8') do |f|
             f.write content
@@ -48,6 +28,33 @@ module SubMixer
         rescue
           raise "Could not write to file #{filename}"
         end
+      end
+
+      def as_safe_string(content, name, encoding=nil)
+        begin
+          unless encoding
+            detection = CharlockHolmes::EncodingDetector.detect(content)
+            encoding = detection[:encoding]
+          end
+          SubMixer.logger.info "Assuming #{encoding} for #{name}"
+          content.force_encoding(encoding)
+        rescue
+          raise "Failure while setting encoding for #{name}"
+        end
+
+        content = remove_bom(content)
+
+        begin
+          content.encode('UTF-8')
+        rescue
+          raise "Failure while transcoding #{name} from #{content.encoding} to intermediate UTF-8 encoding"
+        end
+      end
+
+      def with_extension(path, extension)
+        path = path.strip
+        match = path.match(/^.*\.#{extension}$/)
+        match ? match[0] : "#{path}.#{extension}"
       end
 
       private
@@ -60,12 +67,6 @@ module SubMixer
           end
         end
         content
-      end
-
-      def with_extension(path, extension)
-        path = path.strip
-        match = path.match(/^.*\.#{extension}$/)
-        match ? match[0] : "#{path}.#{extension}"
       end
     end
   end

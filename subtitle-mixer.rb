@@ -16,16 +16,13 @@ rescue Exception => e
 end
 
 def set_logging(is_debug, is_verbose)
-  # default logger is created as DEBUG
-  unless is_debug
-    log_severity= is_verbose ? Logger::INFO : Logger::WARN
+  log_severity= is_debug ? Logger::DEBUG : (is_verbose ? Logger::INFO : Logger::WARN)
 
-    formatter = proc do |severity, datetime, progname, msg|
-      "#{severity}: #{msg}\n"
-    end
-
-    SubMixer.logger = Logger.new($stdout, level: log_severity, formatter: formatter)
+  formatter = proc do |severity, datetime, progname, msg|
+    "#{severity}: #{msg}\n"
   end
+
+  SubMixer.logger = Logger.new($stdout, level: log_severity, formatter: formatter)
 end
 
 run

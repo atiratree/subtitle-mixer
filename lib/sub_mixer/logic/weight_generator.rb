@@ -1,7 +1,7 @@
 module SubMixer
   class WeightGenerator
     def initialize(weight)
-      fail 'weight must be between 0 and 1' if (!priority.is_a? Numeric) || weight < 0 || weight > 1
+      fail 'weight must be between 0 and 1' if (!weight.is_a? Numeric) || weight < 0 || weight > 1
       @weight = weight
     end
 

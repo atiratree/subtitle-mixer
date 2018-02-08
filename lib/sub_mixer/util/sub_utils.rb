@@ -18,7 +18,7 @@ module SubMixer
             :ssa
           end
         else
-          fail 'Unknown format'
+          fail 'Detected SSA/ASS, but could not determine version.'
         end
       end
 
