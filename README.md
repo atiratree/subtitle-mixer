@@ -17,9 +17,17 @@ echo "alias subtitle-mixer=""`pwd`""/subtitle-mixer.rb" >> ~/.bashrc
 ## Usage:
 
 ```
-usage: subtitle-mixer.rb [options]
-    -p FILENAME,[PRIORITY],          Subtitles are picked based on weight = (1 / PRIORITY).
-        --psubtitle                  	FILENAME file with subtitles in "srt" or "ass" format
+Usage: subtitle-mixer.rb [options]
+    -p FILENAME,[PERCENTAGE],        Subtitles are picked based on weight = (PERCENTAGE / 100).
+        --psubtitle                  There is no check that percentages add to 100. 
+                                     So subs can have together 150%. You can use priority in --rsubtitle instead
+                                     	FILENAME file with subtitles in "srt" or "ass" format
+                                     	PERCENTAGE only accurate when all the subtitles add to 100
+                                     	DEFAULT VALUES: PERCENTAGE=100
+                                     	* this option can be specified multiple times
+                                     
+    -r FILENAME,[PRIORITY],          Subtitles are picked based on weight = (1 / PRIORITY).
+        --rsubtitle                  	FILENAME file with subtitles in "srt" or "ass" format
                                      	PRIORITY higher PRIORITY number has less chance to be picked;
                                      		 chance difference to be picked between priorities 1:2 is much larger than between 999:1000
                                      	DEFAULT VALUES: PRIORITY=1

@@ -21,4 +21,13 @@ module SubMixer
       @weight = 1 / priority.to_f
     end
   end
+
+  # Params:
+  # +priority+:: subtitles are weighted with 1 / priority, higher priority number has less chance to be picked
+  class PercentageGenerator < WeightGenerator
+    def initialize(percentage)
+      fail 'Percentage must be Integer between 0 and 100' if (!percentage.is_a? Numeric) || percentage < 0 || percentage > 100
+      @weight = percentage / 100.to_f
+    end
+  end
 end

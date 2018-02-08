@@ -18,7 +18,35 @@ module SubMixer
 
       OptionParser.new do |opts|
         opts.banner = 'Usage: subtitle-mixer.rb [options]'
-        opts.on('-p', '--psubtitle FILENAME,[PRIORITY]', Array,
+
+        opts.on('-p', '--psubtitle FILENAME,[PERCENTAGE]', Array,
+                'Subtitles are picked based on weight = (PERCENTAGE / 100).',
+                'There is no check that percentages add to 100. ',
+                'So subs can have together 150%. You can use priority in --rsubtitle instead',
+                "\tFILENAME file with subtitles in \"srt\" or \"ass\" format",
+                "\tPERCENTAGE only accurate when all the subtitles add to 100",
+                "\tDEFAULT VALUES: PERCENTAGE=100",
+                "\t* this option can be specified multiple times",
+                "\n") do |args|
+          percentage = 100
+
+          case args.length
+          when 0, 1
+            check_empty args
+          when 2
+            percentage = as_percentage(args[1], 'PERCENTAGE')
+          else
+            fail OptionParser::NeedlessArgument.new('Too many arguments')
+          end
+          filename = args[0]
+          inputs << SubMixer::Input.new(filename: filename, weight_generator: SubMixer::PercentageGenerator.new(percentage))
+        end
+
+        opts.on do |args|
+          puts args
+        end
+
+        opts.on('-r', '--rsubtitle FILENAME,[PRIORITY]', Array,
                 'Subtitles are picked based on weight = (1 / PRIORITY).',
                 "\tFILENAME file with subtitles in \"srt\" or \"ass\" format",
                 "\tPRIORITY higher PRIORITY number has less chance to be picked;",
@@ -63,13 +91,11 @@ module SubMixer
             check_empty args
             fail OptionParser::MissingArgument.new('WORDLIST_FILENAME')
           when 2
-          when 3
-            percentage_threshold = as_int(args[2], 'PERCENTAGE_THRESHOLD')
-            if percentage_threshold < 0 || percentage_threshold > 100
-              fail OptionParser::InvalidArgument.new('PERCENTAGE_THRESHOLD should be Integer between 0 and 100')
+          when 3, 4
+            percentage_threshold = as_percentage(args[2], 'PERCENTAGE_THRESHOLD')
+            if 4
+              drop_bellow_threshold = as_bool(args[3], 'DROP_BELLOW_THRESHOLD')
             end
-          when 4
-            drop_bellow_threshold = as_bool(args[3], 'DROP_BELLOW_THRESHOLD')
           else
             fail OptionParser::NeedlessArgument.new('Too many arguments')
           end
@@ -81,7 +107,7 @@ module SubMixer
                                                                           word_list_filename: word_list)
         end
 
-        opts.on('-o', '--output FILENAME') do |filename|
+        opts.on('-o', '--output FILENAME', OptionParser::REQUIRED_ARGUMENT) do |filename|
           output.filename = filename
         end
 
@@ -130,12 +156,13 @@ module SubMixer
       end
 
       if input_count < 2
-        fail OptionParser::MissingArgument.new('at least 2 subtitles (i.e. --psubtitle or --wsubtitle) must be specified. See -h for help')
+        fail OptionParser::MissingArgument.new('at least 2 subtitles (i.e. --psubtitle, --rsubtitle or --wsubtitle) must be specified. See -h for help')
       end
 
       unless output.filename
         fail OptionParser::MissingArgument.new('--output FILENAME. See -h for help')
       end
+      puts options
       options
     end
 
@@ -157,6 +184,14 @@ module SubMixer
       result
     rescue
       fail OptionParser::InvalidArgument.new("#{name} must be integer")
+    end
+
+    def self.as_percentage(value, name)
+      result = as_int(value, name)
+      if result < 0 || result > 100
+        fail OptionParser::InvalidArgument.new("#{name} should be Integer between 0 and 100")
+      end
+      result
     end
 
     def self.as_bool(value, name)

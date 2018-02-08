@@ -61,11 +61,8 @@ class ResultController < ApplicationController
   def to_inputs(sub1, sub2, sub2_percentage)
     if sub1[MODE] == LANG_MODE
       if sub2[MODE] == LANG_MODE
-
-        sub1_weight = (100 - sub2_percentage) / 100.to_f
-        sub2_weight = sub2_percentage / 100.to_f
-        [to_lang_input(sub1, sub1_weight),
-         to_lang_input(sub2, sub2_weight)]
+        [to_lang_input(sub1, 100 - sub2_percentage),
+         to_lang_input(sub2, sub2_percentage)]
       else
         [to_lang_input(sub1, 1),
          to_study_input(sub2)]
@@ -80,11 +77,11 @@ class ResultController < ApplicationController
     end
   end
 
-  def to_lang_input(sub, weight)
+  def to_lang_input(sub, percentage)
     name = sub[NAME]
     SubMixer::Input.new(name: sub[NAME],
                         content: decode(sub[CONTENT], name),
-                        weight_generator: SubMixer::WeightGenerator.new(weight))
+                        weight_generator: SubMixer::PercentageGenerator.new(percentage))
   end
 
   def to_study_input(sub)
