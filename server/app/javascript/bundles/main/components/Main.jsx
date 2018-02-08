@@ -33,6 +33,7 @@ export default class Main extends React.Component {
                 output: {
                     sub2Percentage: 50,
                     format: 'ASS',
+                    persistFormatting: false,
                     error: null,
                 },
             }

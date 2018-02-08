@@ -17,6 +17,7 @@ class ResultController < ApplicationController
 
   FORMAT='format'
   SUB_2_PERCENTAGE='sub2Percentage'
+  PERSIST_FORMATTING='persistFormatting'
 
   STUDY_MODE='STUDY'
   LANG_MODE='LANG'
@@ -41,9 +42,9 @@ class ResultController < ApplicationController
 
     sub_output = SubMixer::Output.new(filename: 'combined', # just a name, is not saved
                                       format: format,
-                                      persist_formatting: false,
+                                      persist_formatting: output[PERSIST_FORMATTING],
                                       max_parallel_sub_drift: 0.2)
-
+    puts output[PERSIST_FORMATTING]
     sub_inputs = to_inputs(data[SUB_1], data[SUB_2], output[SUB_2_PERCENTAGE].to_f)
     runner = SubMixer::Runner.new(sub_inputs, sub_output, fail_hard: true)
 
