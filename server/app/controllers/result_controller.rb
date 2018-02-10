@@ -24,6 +24,7 @@ class ResultController < ApplicationController
   FORMAT='format'
   SUB_2_PERCENTAGE='sub2Percentage'
   PERSIST_FORMATTING='persistFormatting'
+  FONT_SIZE='fontSize'
 
   STUDY_MODE='STUDY'
   LANG_MODE='LANG'
@@ -48,6 +49,7 @@ class ResultController < ApplicationController
 
     sub_output = SubMixer::Output.new(name: 'combined',
                                       format: format,
+                                      font_size: output[FONT_SIZE].to_i,
                                       persist_formatting: output[PERSIST_FORMATTING],
                                       max_parallel_sub_drift: 0.2)
     puts output[PERSIST_FORMATTING]
@@ -96,7 +98,7 @@ class ResultController < ApplicationController
     words_name = sub[WORD_LIST_NAME]
 
     weight_generator = SubMixer::DictionaryWeightGenerator.new(
-        sub[WORD_LIST_PERCENTAGE_THRESHOLD],
+        sub[WORD_LIST_PERCENTAGE_THRESHOLD].to_f,
         !sub[WORD_LIST_CONSIDER_BELOW_THRESHOLD])
 
     SubMixer::WordListSubtitleInput.new(name: name,

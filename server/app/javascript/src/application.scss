@@ -11,6 +11,26 @@ body {
   padding: 0;
 }
 
+.bigger-font {
+  font-size: 1.1em;
+}
+
 .larger-font {
   font-size: 1.3em;
+}
+
+.start-margin {
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+
+.no-icon-list {
+  list-style-type: none;
+  padding-left: 1em;
+}
+
+.description-area {
+  padding-bottom: 2em;
+  padding-left: 2em;
 }

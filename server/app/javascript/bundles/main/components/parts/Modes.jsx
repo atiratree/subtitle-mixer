@@ -23,9 +23,9 @@ export default class SubtitlesSelect extends React.Component {
         const mode = this.props.mode;
         return (
             <div id={this.props.id}>
-                <div id="description">
+                <div id="description" className="description-area bigger-font">
                     <h3>
-                        Select how much of each language you want to see:
+                        Choose how much of each language you want to see:
                     </h3>
                     <ul className="no-icon-list">
                         <li>

@@ -84,7 +84,7 @@ export default class SubtitlesSelect extends React.Component {
                     <PercentageWidget id={id("percentage-threshold")}
                                       percentage={data.wordsPercentageThreshold}
                                       onChange={this.setResult.bind(this, 'wordsPercentageThreshold')}
-                                      label= {`Pick sentence when at least ${data.wordsPercentageThreshold}% words are recognized`}
+                                      label= {`Pick sentences where at least ${data.wordsPercentageThreshold}% words are recognized`}
                                       showTopPercentage={true}/>
                     <div className="form-group">
                         <label className="control-label">

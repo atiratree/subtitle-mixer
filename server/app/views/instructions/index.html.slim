@@ -2,7 +2,40 @@
   = render 'shared/navbar'
 
   #content.container
-    ol.larger-font
-      li Upload subtitles in <strong>SRT</strong> or <strong>SSA/ASS</strong> format
-      li Weigh subtitles with the slider
-      li Select output format (preferably the same as input format)
+    .description-area.bigger-font
+      h3 How-to
+      ol
+        li Choose <i>study mode</i>
+        li Upload subtitles in <strong>SRT</strong> or <strong>SSA/ASS</strong> format
+        li
+          ul.no-icon-list
+            li a) <strong>Mix</strong>: randomly picks subtitles based on the weight
+            li
+              ul.no-icon-list
+                li - The percentages will be off a bit if:
+                li
+                  ul.no-icon-list
+                    li  a) subs are not timed correctly
+                    li  b) one file has more subs than the other
+            li b) <strong>Study</strong>: upload the words you already know and set the difficulty of the output
+            li
+              ul.no-icon-list
+                li
+                  '- You can also use most common words for your selected language:
+                  a href="https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists" target="_blank" Frequency Lists
+                li - input text doesn't have to be formatted
+                li - The language is always picked when you reach the percentage threshold
+                li - <i>Consider option:</i> The sentence is less likely to appear the less you know the words
+        li Select <i>output format</i> (preferably the same as input format)
+        li Choose <i>font size</i>: ASS only: this depends on the resolution which is set to 1280x720.
+        li <i>Persist styles</i> (turn off if the styles differ too much between the subs)
+      h3 Known Issues
+      h4 All
+      ul.no-icon-list
+        li - mistakes in badly timed subtitles
+      h4 SSA/ASS
+      ul.no-icon-list
+        li - Karaoke can be buggy
+      p
+        'Please report unkown issues to the
+        a href="https://github.com/suomiy/subtitle-mixer/issues" target="_blank" Github page

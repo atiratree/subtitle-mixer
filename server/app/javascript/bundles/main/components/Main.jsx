@@ -39,6 +39,7 @@ export default class Main extends React.Component {
                 output: {
                     sub2Percentage: 50,
                     format: ASS,
+                    fontSize: 45,
                     persistFormatting: false,
                     error: null,
                 },
