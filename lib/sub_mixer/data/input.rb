@@ -17,12 +17,17 @@ module SubMixer
 
   class WordListSubtitleInput < Input
     attr_accessor :word_list_filename
-    attr_accessor :words
+    attr_accessor :word_list_name
+    attr_accessor :word_list_content
 
-    def initialize(filename: nil, name: nil, content: nil, weight_generator: nil, word_list_filename: nil, words: nil)
+    def initialize(filename: nil, name: nil, content: nil, weight_generator: nil,
+                   word_list_filename: nil,
+                   word_list_name: nil,
+                   word_list_content: nil)
       super(filename: filename, name: name, content: content, weight_generator: weight_generator)
       @word_list_filename = word_list_filename
-      @words = words
+      @word_list_name = word_list_name ? word_list_name : word_list_filename
+      @word_list_content = word_list_content
     end
   end
 end

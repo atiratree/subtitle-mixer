@@ -27,10 +27,11 @@ module SubMixer
     def with_word_list(inputs, word_list_input)
       if word_list_input
         if word_list_input.word_list_filename
-          word_list_input.words = SubMixer::FileUtils.read word_list_input.word_list_filename
+          word_list_input.word_list_content = SubMixer::FileUtils.read word_list_input.word_list_filename
         end
-        word_list_input.words = SubMixer::FileUtils.as_safe_string(word_list_input.words, word_list_input.name)
-        word_list_input.weight_generator.set_words(word_list_input.words)
+        word_list_input.word_list_content = SubMixer::FileUtils.as_safe_string(
+            word_list_input.word_list_content, word_list_input.name)
+        word_list_input.weight_generator.set_words(word_list_input.word_list_content)
         inputs + [word_list_input]
       else
         inputs
