@@ -25,7 +25,7 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
-  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 1, 15*1024 * 1024) # 30 MiB Total
+  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 1, 15 * 1024 * 1024) # 30 MiB Total
 
 
   # Don't care if the mailer can't send.

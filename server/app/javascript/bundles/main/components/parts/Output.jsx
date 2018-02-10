@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {ASS,SRT} from "../../../common/constants";
 
 export default class SubtitlesSelect extends React.Component {
-
     static propTypes = {
         id: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
@@ -19,7 +19,6 @@ export default class SubtitlesSelect extends React.Component {
     onFormatChange(e) {
         this.props.onChange('format', e.target.value);
     }
-
 
     onPersistFormattingChange(e) {
         this.props.onChange('persistFormatting', e.target.checked);
@@ -40,8 +39,8 @@ export default class SubtitlesSelect extends React.Component {
                         </label>
                         <div className="col-sm-5 text-center">
                             <select className="form-control" onChange={this.onFormatChange} defaultValue={data.format}>
-                                <option>SRT</option>
-                                <option>ASS</option>
+                                <option>{SRT}</option>
+                                <option>{ASS}</option>
                             </select>
                         </div>
                     </div>
@@ -52,7 +51,7 @@ export default class SubtitlesSelect extends React.Component {
                         <div className="col-sm-5 text-center" >
                             <div className="checkbox">
                                 <label>
-                                    <input type="checkbox" onChange={this.onPersistFormattingChange} defaultChecked={data.persistFormatting}/>
+                                    <input className="checkbox" type="checkbox" onChange={this.onPersistFormattingChange} defaultChecked={data.persistFormatting}/>
                                 </label>
                             </div>
                         </div>

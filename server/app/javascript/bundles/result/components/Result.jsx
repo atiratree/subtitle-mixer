@@ -18,7 +18,7 @@ export default class Result extends React.Component {
     }
 
     render() {
-        const reported = (this.props.report.map(item => ( <li>{item}</li>)));
+        const reported = (this.props.report.map((item, idx) => ( <li key={idx}>{item}</li>)));
 
         let errorLabel = null;
         if (this.props.error) {

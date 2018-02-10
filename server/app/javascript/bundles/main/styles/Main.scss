@@ -15,8 +15,9 @@
   padding-bottom: 0.20em;
 }
 
-.browse-button {
-  margin: 0.33em;
+.vertical-padding {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .browse-label {
@@ -37,4 +38,35 @@
 
 .smallNumber {
   color: #666666;
+}
+
+.form-check-label {
+  padding-left: 1em;
+}
+
+.no-icon-list {
+  list-style-type: none;
+  padding-left: 1em;
+}
+
+.no-bold-label {
+  font-weight: normal !important;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0 ;
+}
+
+.file-select {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.file-select-name {
+  border-right: none;
+}
+
+.file-select-button {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0vh;
 }
