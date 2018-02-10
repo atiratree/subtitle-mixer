@@ -64,19 +64,19 @@ module SubMixer
           inputs << SubMixer::Input.new(filename: filename, weight_generator: SubMixer::PriorityGenerator.new(priority))
         end
 
-        opts.on('-w', '--wsubtitle FILENAME,WORDLIST_FILENAME,[PERCENTAGE_THRESHOLD],[DROP_BELLOW_THRESHOLD]', Array,
+        opts.on('-w', '--wsubtitle FILENAME,WORDLIST_FILENAME,[PERCENTAGE_THRESHOLD],[CONSIDER_BELLOW_THRESHOLD]', Array,
                 'Subtitles are picked based upon known words in each sentence from WORDLIST_FILENAME',
                 "\tFILENAME file with subtitles in \"srt\" or \"ass\" format",
                 "\tWORDLIST_FILENAME file which contains known words",
                 "\tPERCENTAGE_THRESHOLD how many percent of each sentence should be covered by known words",
                 "\t\tfor the sentence to be picked",
-                "\tDROP_BELLOW_THRESHOLD true,false; if true, than each sentence will be weighed by the percentage of",
+                "\tCONSIDER_BELLOW_THRESHOLD true,false; if true, than each sentence will be weighed by the percentage of",
                 "\t\trecognized words until reaching PERCENTAGE_THRESHOLD",
-                "\tDEFAULT VALUES: PERCENTAGE_THRESHOLD=100, DROP_BELLOW_THRESHOLD=FALSE",
+                "\tDEFAULT VALUES: PERCENTAGE_THRESHOLD=100, CONSIDER_BELLOW_THRESHOLD=FALSE",
                 "\t* this option can be specified only once",
                 "\n") do |args|
           percentage_threshold = 100
-          drop_bellow_threshold = false
+          drop_bellow_threshold = true
 
           if options[:word_list_input]
             fail OptionParser::AmbiguousArgument.new('There can be only one specified')
@@ -90,7 +90,7 @@ module SubMixer
           when 3, 4
             percentage_threshold = as_percentage(args[2], 'PERCENTAGE_THRESHOLD')
             if args.length == 4
-              drop_bellow_threshold = as_bool(args[3], 'DROP_BELLOW_THRESHOLD')
+              drop_bellow_threshold = !as_bool(args[3], 'CONSIDER_BELLOW_THRESHOLD')
             end
           else
             fail OptionParser::NeedlessArgument.new('Too many arguments')

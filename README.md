@@ -11,7 +11,7 @@ bundle install
 # OPTIONAL: make alias for easier usage
 echo "alias subtitle-mixer=""`pwd`""/subtitle-mixer.rb" >> ~/.bashrc
 # mix subs!
-./subtitle-mixer -p "movie.en.srt" -p "movie.de.ass" -o "combined"
+./subtitle-mixer.rb -p "movie.en.srt" -p "movie.de.ass" -o "combined"
 ```
 
 ## Usage
@@ -55,15 +55,15 @@ Usage: subtitle-mixer.rb [options]
                                      	DEFAULT VALUES: PRIORITY=1
                                      	* this option can be specified multiple times
                                      
-    -w FILENAME,WORDLIST_FILENAME,[PERCENTAGE_THRESHOLD],[DROP_BELLOW_THRESHOLD],
+    -w FILENAME,WORDLIST_FILENAME,[PERCENTAGE_THRESHOLD],[CONSIDER_BELLOW_THRESHOLD],
         --wsubtitle                  Subtitles are picked based upon known words in each sentence from WORDLIST_FILENAME
                                      	FILENAME file with subtitles in "srt" or "ass" format
                                      	WORDLIST_FILENAME file which contains known words
                                      	PERCENTAGE_THRESHOLD how many percent of each sentence should be covered by known words
                                      		for the sentence to be picked
-                                     	DROP_BELLOW_THRESHOLD true,false; if true, than each sentence will be weighed by the percentage of
+                                     	CONSIDER_BELLOW_THRESHOLD true,false; if true, than each sentence will be weighed by the percentage of
                                      		recognized words until reaching PERCENTAGE_THRESHOLD
-                                     	DEFAULT VALUES: PERCENTAGE_THRESHOLD=100, DROP_BELLOW_THRESHOLD=FALSE
+                                     	DEFAULT VALUES: PERCENTAGE_THRESHOLD=100, CONSIDER_BELLOW_THRESHOLD=FALSE
                                      	* this option can be specified only once
                                      
     -o, --output FILENAME
